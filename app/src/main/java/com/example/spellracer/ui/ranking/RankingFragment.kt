@@ -1,4 +1,4 @@
-package com.example.spellracer.ui.home
+package com.example.spellracer.ui.ranking
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.spellracer.databinding.FragmentHomeBinding
+import com.example.spellracer.MainViewModel
+import com.example.spellracer.databinding.FragmentRankingBinding
 
-class HomeFragment : Fragment() {
+class RankingFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentRankingBinding? = null
+    private val viewModel: MainViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +25,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val rankingViewModel =
+            ViewModelProvider(this).get(RankingViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentRankingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textRanking
+        rankingViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

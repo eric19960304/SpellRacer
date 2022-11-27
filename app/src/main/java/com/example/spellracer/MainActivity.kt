@@ -1,17 +1,51 @@
 package com.example.spellracer
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.spellracer.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val loginResultKey = "loginResult"
+    }
+
     private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModels()
+
+    private var loginLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.d(javaClass.simpleName, "login ok")
+                val data: Intent? = result.data
+                data?.extras?.apply {
+                    val loginResult = getBoolean(loginResultKey)
+                    if(!loginResult) {
+                        Toast.makeText(applicationContext, "Login Failed", Toast.LENGTH_LONG)
+                    } else {
+                        viewModel.updateUser()
+                    }
+                }
+            } else {
+                Log.w(javaClass.simpleName, "Bad activity return code ${result.resultCode}")
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,5 +65,38 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // redirect to login page if user haven't logged in
+        val mFirebaseAuth = FirebaseAuth.getInstance()
+        if (mFirebaseAuth.currentUser == null) {
+            // Not signed in, launch the Sign In activity
+            startLoginActivity()
+        } else {
+            viewModel.updateUser()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_setting, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                viewModel.signOut()
+                startLoginActivity()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun startLoginActivity() {
+        loginLauncher.launch(Intent(this, LoginActivity::class.java))
     }
 }
