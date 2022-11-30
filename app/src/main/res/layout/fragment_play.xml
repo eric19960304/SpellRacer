@@ -6,17 +6,137 @@
     android:layout_height="match_parent"
     tools:context=".ui.play.PlayFragment">
 
-    <TextView
-        android:id="@+id/text_play"
+    <LinearLayout
+        android:id="@+id/init_screen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_start_init"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:background="@color/green"
+            android:contentDescription="start button"
+            android:text="New Game" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/play_screen"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_count_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="40sp"
+                android:textColor="@color/dark_red"
+                android:text="3"
+                />
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollHorizontally="false"
+            android:maxLines="4"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            />
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:background="@color/dark_red"
+            android:contentDescription="submit button"
+            android:text="Submit Answer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/result_screen"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="5dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Answer:"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/tv_answer"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:text="Pluto is a planet"
+            android:textSize="24sp"
+            android:background="@drawable/border"
+            android:typeface="monospace"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Your Input:"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/tv_user_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:text=""
+            android:textSize="24sp"
+            android:background="@drawable/border"
+            android:typeface="monospace"
+            />
+
+        <Button
+            android:id="@+id/btn_start_result"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="start button"
+            android:text="New Game" />
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

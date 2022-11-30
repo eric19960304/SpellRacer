@@ -2,7 +2,9 @@ package com.example.spellracer
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -17,8 +19,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.spellracer.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     companion object {
         const val loginResultKey = "loginResult"
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    lateinit var tts: TextToSpeech
 
     private var loginLauncher =
         registerForActivityResult(
@@ -74,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             viewModel.updateUser()
         }
+
+        tts = TextToSpeech(this, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -98,5 +104,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun startLoginActivity() {
         loginLauncher.launch(Intent(this, LoginActivity::class.java))
+    }
+
+    override fun onInit(status: Int) {
+        Log.d("MainActivity onInit", status.toString())
+        if(status == TextToSpeech.SUCCESS) {
+            tts.language = Locale.UK
+            tts.setSpeechRate(0.75f)
+            speak("Welcome to spell racer! Please start a new game by clicking the button")
+        } else {
+            finish()
+        }
+    }
+
+    fun speak(text: String) {
+        tts.speak(text,TextToSpeech.QUEUE_FLUSH,null,null)
     }
 }
