@@ -48,6 +48,7 @@ class PlayerResultAdapter(val isHideSpeed: Boolean = false) : RecyclerView.Adapt
     }
 
     fun submitList(items: List<Player>) {
+        players.clear()
         players.addAll(items)
     }
 

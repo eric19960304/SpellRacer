@@ -56,6 +56,7 @@ class GameResultAdapter
     }
 
     fun submitList(items: List<GameResult>) {
+        gameResults.clear()
         gameResults.addAll(items)
     }
 
