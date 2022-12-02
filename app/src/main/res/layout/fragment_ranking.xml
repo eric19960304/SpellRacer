@@ -1,22 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.ranking.RankingFragment">
 
-    <TextView
-        android:id="@+id/text_ranking"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:id="@+id/titles_1"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/tv_title_player_1"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="Player"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_accuracy"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="ACCURACY"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_1"
+        android:layout_weight="0.4"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/titles_2"
+        android:paddingTop="5dp"
+        android:layout_weight="0.1"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/tv_title_player_2"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="Player"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_speed"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="SPEED(WPM)"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_2"
+        android:scrollbars="vertical"
+        android:layout_weight="0.4"
+        android:fadeScrollbars="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

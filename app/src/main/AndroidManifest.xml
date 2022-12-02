@@ -41,6 +41,13 @@
             android:label="Login Page"
             android:theme="@style/Theme.SpellRacer">
         </activity>
+
+        <activity
+            android:name=".GameDetailsActivity"
+            android:label="Game Details Page"
+            android:theme="@style/Theme.SpellRacer">
+
+        </activity>
     </application>
 
 </manifest>

@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     if(!loginResult) {
                         Toast.makeText(applicationContext, "Login Failed", Toast.LENGTH_LONG)
                     } else {
-                        viewModel.updateUser()
+                        actionUponSuccessfulLogin()
                     }
                 }
             } else {
@@ -76,10 +76,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             // Not signed in, launch the Sign In activity
             startLoginActivity()
         } else {
-            viewModel.updateUser()
+            actionUponSuccessfulLogin()
         }
 
         tts = TextToSpeech(this, this)
+        viewModel.fetchGameResults()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -107,11 +108,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     override fun onInit(status: Int) {
-        Log.d("MainActivity onInit", status.toString())
+        Log.d(javaClass.simpleName, "onInit" + status.toString())
         if(status == TextToSpeech.SUCCESS) {
             tts.language = Locale.UK
             tts.setSpeechRate(0.75f)
-            speak("Welcome to spell racer! Please start a new game by clicking the button")
+            viewModel.uid.value.apply {
+                val uid = viewModel.uid.value
+                if (uid != null && uid.isNotEmpty()) {
+                    speakWelcomeSpeech()
+                }
+            }
+
         } else {
             finish()
         }
@@ -119,5 +126,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     fun speak(text: String) {
         tts.speak(text,TextToSpeech.QUEUE_FLUSH,null,null)
+    }
+
+    private fun actionUponSuccessfulLogin() {
+        viewModel.updateUser()
+        if(this::tts.isInitialized) {
+            speakWelcomeSpeech()
+        }
+        viewModel.fetchGameResults()
+    }
+
+    private fun speakWelcomeSpeech() {
+        speak("Welcome to spell racer! Please start a new game by clicking the button")
     }
 }

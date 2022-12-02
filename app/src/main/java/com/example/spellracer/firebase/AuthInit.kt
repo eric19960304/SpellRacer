@@ -10,7 +10,7 @@ class AuthInit(signInLauncher: ActivityResultLauncher<Intent>) {
     init {
         val user = FirebaseAuth.getInstance().currentUser
         if(user == null) {
-            Log.d("AuthInit", "XXX user null")
+            Log.d(javaClass.simpleName, "user null")
             // Choose authentication providers
             val providers = arrayListOf(
                 AuthUI.IdpConfig.GoogleBuilder().build())
@@ -24,7 +24,7 @@ class AuthInit(signInLauncher: ActivityResultLauncher<Intent>) {
                 .build()
             signInLauncher.launch(signInIntent)
         } else {
-            Log.d("AuthInit", " user ${user.displayName} email ${user.email}")
+            Log.d(javaClass.simpleName, " user ${user.displayName} email ${user.email}")
         }
     }
 }

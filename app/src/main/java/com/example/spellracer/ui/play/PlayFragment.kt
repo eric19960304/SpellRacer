@@ -9,7 +9,6 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,8 +18,12 @@ import com.example.spellracer.MainActivity
 import com.example.spellracer.MainViewModel
 import com.example.spellracer.R
 import com.example.spellracer.databinding.FragmentPlayBinding
+import com.example.spellracer.models.GameResult
+import com.example.spellracer.utils.DiffTextMaker
 import com.example.spellracer.utils.Timer
 import kotlinx.coroutines.*
+import java.time.Duration
+import java.time.Instant
 
 
 class PlayFragment : Fragment(), CoroutineScope by MainScope() {
@@ -33,9 +36,9 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
     private val binding get() = _binding!!
     private lateinit var mainActivity : MainActivity
     private lateinit var playViewModel: PlayViewModel
-    private var darkGreen: Int = 0
-    private var darkRed: Int = 0
     private lateinit var speakTask: Deferred<Unit>
+
+    private var startTime: Instant? = null
 
 
     override fun onCreateView(
@@ -43,16 +46,15 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        playViewModel =
-            ViewModelProvider(this).get(PlayViewModel::class.java)
+        if(!this::playViewModel.isInitialized) {
+            playViewModel =
+                ViewModelProvider(this).get(PlayViewModel::class.java)
+        }
 
         mainActivity = requireActivity() as MainActivity
 
         _binding = FragmentPlayBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        darkGreen = ContextCompat.getColor(requireContext(), R.color.dark_green)
-        darkRed = ContextCompat.getColor(requireContext(), R.color.dark_red)
 
         playViewModel.questions.observe(viewLifecycleOwner) {
             if(it.isEmpty()) {
@@ -61,7 +63,7 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
         }
 
         playViewModel.currentQuestion.observe(viewLifecycleOwner) {
-            binding.tvAnswer.text = toColoredText(it, Color.BLACK)
+            Log.i(javaClass.simpleName, "currentQuestion: ***** $it *****")
         }
 
         binding.btnStartInit.setOnClickListener {
@@ -88,9 +90,6 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
             return
         }
 
-        Log.d("startGame number of questions", playViewModel.questions.value!!.size.toString())
-        Log.d("startGame next questions", playViewModel.questions.value!![0])
-
         playViewModel.popQuestion()
 
         // clean up input area
@@ -116,6 +115,7 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
                     delay(100)
                 }
                 binding.tvCountDown.text = "End of Audio"
+                startTime = Instant.now()
             }
         }
     }
@@ -123,27 +123,50 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
     private fun submitAnswer() {
         hideKeyboard()
 
-        val answerWords: List<String> = playViewModel.currentQuestion.value!!.split(" ")
-        val userInputWords: List<String> = binding.etInput.text.split(" ")
-        binding.tvUserInput.text = ""
+        val answer: String = playViewModel.currentQuestion.value!!
+        val userInput: String = binding.etInput.text.toString()
 
-        userInputWords.forEachIndexed { index, inputWord ->
-            if(index > 0) {
-                binding.tvUserInput.append(toColoredText(" ", Color.BLACK))
-            }
-            if(index < answerWords.size) {
-                val answerWord = answerWords[index]
-                val isCorrect = answerWord.equals(inputWord, ignoreCase = true)
-                binding.tvUserInput.append(toColoredText(inputWord, if(isCorrect) darkGreen else darkRed))
-            } else {
-                binding.tvUserInput.append(toColoredText(inputWord, darkRed))
-            }
+        // calculate the time used in milliseconds
+        val endTime = Instant.now()
+        val timeUsed: Duration = if(startTime != null) Duration.between(startTime, endTime) else Duration.ZERO
+        Log.d(javaClass.simpleName, "timeUsed (millis): " + timeUsed.toMillis().toString())
+
+        val answerWords = answer.split(" ")
+        val userInputWords = userInput.split(" ")
+        val temp = DiffTextMaker.make(answerWords, userInputWords)
+        val userInputDisplay = temp.first
+        val correctWordsCount = temp.second
+
+        // calculate accuracy and speed
+        val accuracy = (correctWordsCount.toFloat() / answerWords.size.toFloat() * 100).toInt()
+        var wpm = (userInputWords.size.toFloat() / (timeUsed.toMillis().toFloat() / (60 * 1000).toFloat()) ).toInt()
+
+        if(correctWordsCount == 0) {
+            wpm = 0
         }
+
+        // set UI value
+        binding.tvUserInput.text = userInputDisplay
+        binding.accuracy.text = accuracy.toString()
+        binding.wpm.text = wpm.toString()
+        binding.tvAnswer.text = DiffTextMaker.toColoredText(playViewModel.currentQuestion.value!!, Color.BLACK)
 
         // set screen
         binding.initScreen.visibility = View.GONE
         binding.playScreen.visibility = View.GONE
         binding.resultScreen.visibility = View.VISIBLE
+
+        // save game result to Firestore
+        viewModel.dbHelp.createGameResult(
+            GameResult(
+                uid = viewModel.uid.value!!,
+                userDisplayName = viewModel.displayName.value!!,
+                accuracy = accuracy,
+                wpm = wpm,
+                answer = answer,
+                userInput = userInput),
+            viewModel.gameResults
+        )
     }
 
     private fun focusAndShowSoftKeyboard(view: View) {
@@ -156,13 +179,5 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
     private fun hideKeyboard() {
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireActivity().window.decorView.rootView.windowToken, 0)
-    }
-
-    private fun toColoredText(s: String, colorId: Int): SpannableString {
-        val ss = SpannableString(s)
-        ss.setSpan(
-            ForegroundColorSpan(colorId),
-            0, ss.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
-        return ss
     }
 }

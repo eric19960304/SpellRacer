@@ -6,17 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryFragment">
 
-    <TextView
-        android:id="@+id/text_history"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/titles"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/tv_title_speed"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="SPEED (WPM)"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_accuracy"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="ACCURACY"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_date"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="DATE"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@+id/titles"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/recyclerView"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
