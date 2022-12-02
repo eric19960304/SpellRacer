@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.spellracer.databinding.ActivityMainBinding
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
@@ -95,8 +96,11 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_logout -> {
-                viewModel.signOut()
-                startLoginActivity()
+                AuthUI.getInstance().signOut(applicationContext).addOnCompleteListener {
+                    FirebaseAuth.getInstance().signOut()
+                    viewModel.userLogout()
+                    startLoginActivity()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -112,13 +116,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if(status == TextToSpeech.SUCCESS) {
             tts.language = Locale.UK
             tts.setSpeechRate(0.75f)
-            viewModel.uid.value.apply {
-                val uid = viewModel.uid.value
-                if (uid != null && uid.isNotEmpty()) {
-                    speakWelcomeSpeech()
-                }
-            }
-
+            viewModel.fetchGameResults()
         } else {
             finish()
         }
@@ -130,13 +128,6 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun actionUponSuccessfulLogin() {
         viewModel.updateUser()
-        if(this::tts.isInitialized) {
-            speakWelcomeSpeech()
-        }
         viewModel.fetchGameResults()
-    }
-
-    private fun speakWelcomeSpeech() {
-        speak("Welcome to spell racer! Please start a new game by clicking the button")
     }
 }

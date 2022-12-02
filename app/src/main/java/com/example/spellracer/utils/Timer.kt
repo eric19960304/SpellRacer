@@ -26,6 +26,6 @@ class Timer(private var textView: TextView) {
             delay(delayMillis)
             currentMillis = System.currentTimeMillis()
         }
-        textView.text = "Playing..."
+        textView.text = "Playing Audio..."
     }
 }

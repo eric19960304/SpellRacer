@@ -1,5 +1,6 @@
 package com.example.spellracer.ui.play
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -41,6 +42,7 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
     private var startTime: Instant? = null
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,6 +68,10 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
             Log.i(javaClass.simpleName, "currentQuestion: ***** $it *****")
         }
 
+        viewModel.displayName.observe(viewLifecycleOwner) {
+            binding.tvWelcome.text = "Welcome, ${it}!"
+        }
+
         binding.btnStartInit.setOnClickListener {
             startGame()
         }
@@ -75,6 +81,7 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
         binding.btnSubmit.setOnClickListener {
             submitAnswer()
         }
+
 
         return root
     }

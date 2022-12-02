@@ -16,7 +16,6 @@ import com.google.android.gms.common.SignInButton
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var mSignInClient: GoogleSignInClient
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { res ->
@@ -28,12 +27,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestScopes(com.google.android.gms.common.api.Scope("https://www.googleapis.com/auth/cloud-platform"))
-            .build()
-
-        mSignInClient = GoogleSignIn.getClient(this, options)
 
         val signInButton: SignInButton = binding.signInButton
         signInButton.setOnClickListener{
