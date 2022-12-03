@@ -26,5 +26,6 @@ class MainViewModel : ViewModel() {
     fun userLogout() {
         displayName.postValue("")
         uid.postValue("")
+        gameResults.postValue(emptyList())
     }
 }
