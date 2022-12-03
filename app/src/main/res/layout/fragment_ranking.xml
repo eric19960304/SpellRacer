@@ -14,6 +14,21 @@
         android:id="@+id/titles_1"
         android:gravity="center"
         >
+
+        <TextView
+            android:id="@+id/tv_title_rank_1"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="#"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+
         <TextView
             android:id="@+id/tv_title_player_1"
             android:layout_width="0dp"
@@ -60,6 +75,21 @@
         android:layout_weight="0.1"
         android:gravity="center"
         >
+
+        <TextView
+            android:id="@+id/tv_title_rank_2"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="wrap_content"
+            android:textColor="#071B87"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:text="#"
+            android:gravity="center"
+            android:background="@drawable/border"
+            />
+
         <TextView
             android:id="@+id/tv_title_player_2"
             android:layout_width="0dp"

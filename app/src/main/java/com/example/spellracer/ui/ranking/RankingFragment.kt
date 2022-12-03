@@ -41,13 +41,13 @@ class RankingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val rv1 = binding.recyclerView1
-        val adapter1 = PlayerResultAdapter(true)
+        val adapter1 = PlayerResultAdapter(true, viewModel.uid.value!!)
         rv1.adapter = adapter1
         rv1.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rv1.setHasFixedSize(true)
 
         val rv2 = binding.recyclerView2
-        val adapter2 = PlayerResultAdapter(false)
+        val adapter2 = PlayerResultAdapter(false, viewModel.uid.value!!)
         rv2.adapter = adapter2
         rv2.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rv2.setHasFixedSize(true)
@@ -61,7 +61,8 @@ class RankingFragment : Fragment() {
                         uid = game.uid,
                         userDisplayName = game.userDisplayName,
                         avgAccuracy = game.accuracy.toDouble(),
-                        avgWpm = game.wpm.toDouble()
+                        avgWpm = game.wpm.toDouble(),
+                        numberOfGame = 1
                     )
                     hashMap.put(game.uid, player)
                 } else {
@@ -72,7 +73,8 @@ class RankingFragment : Fragment() {
                         uid = game.uid,
                         userDisplayName = game.userDisplayName,
                         avgAccuracy = newAvgAccuracy,
-                        avgWpm = newAvgWpm
+                        avgWpm = newAvgWpm,
+                        numberOfGame = oldPlayer.numberOfGame + 1
                     )
                     hashMap.put(game.uid, newPlayer)
                 }

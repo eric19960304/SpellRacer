@@ -1,6 +1,7 @@
 package com.example.spellracer.utils
 
 import android.content.Context
+import android.graphics.Color
 import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.spellracer.databinding.PlayerRowBinding
 import com.example.spellracer.models.Player
 
-class PlayerResultAdapter(val isHideSpeed: Boolean = false) : RecyclerView.Adapter<PlayerResultAdapter.VH>() {
+class PlayerResultAdapter(val isHideSpeed: Boolean = false, val uid: String) : RecyclerView.Adapter<PlayerResultAdapter.VH>() {
     private var players = mutableListOf<Player>()
     private lateinit var context : Context
 
@@ -39,6 +40,11 @@ class PlayerResultAdapter(val isHideSpeed: Boolean = false) : RecyclerView.Adapt
         rowBinding.tvPlayerName.text = item.userDisplayName
         rowBinding.tvAccuracy.text = String.format("%.2f", item.avgAccuracy)
         rowBinding.tvSpeed.text = String.format("%.2f", item.avgWpm)
+        rowBinding.tvPlayerRank.text = (holder.adapterPosition + 1).toString()
+
+        if(item.uid.equals(uid)) {
+            rowBinding.root.setBackgroundColor(Color.YELLOW)
+        }
 
         if(isHideSpeed) {
             rowBinding.tvSpeed.visibility = View.GONE
