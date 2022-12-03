@@ -44,6 +44,8 @@ class PlayerResultAdapter(val isHideSpeed: Boolean = false, val uid: String) : R
 
         if(item.uid.equals(uid)) {
             rowBinding.root.setBackgroundColor(Color.YELLOW)
+        } else {
+            rowBinding.root.setBackgroundColor(Color.WHITE)
         }
 
         if(isHideSpeed) {

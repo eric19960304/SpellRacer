@@ -83,15 +83,14 @@ class RankingFragment : Fragment() {
             val players : List<Player> = hashMap.keys.map { k ->
                 hashMap[k]!!
             }
-            players.sortedByDescending {
+
+            val playersByAccuracy: List<Player> = players.sortedByDescending {
                 it.avgAccuracy
             }
-            val playersByAccuracy: List<Player> = players.toList()
 
-            players.sortedByDescending {
+            val playersBySpeed: List<Player> = players.sortedByDescending {
                 it.avgWpm
             }
-            val playersBySpeed: List<Player> = players.toList()
 
             adapter1.submitList(playersByAccuracy)
             adapter1.notifyDataSetChanged()
