@@ -1,9 +1,8 @@
-# SpellRacer
-
 ## Introduction
 
-This is a typing challenge game where you will listen to a random English sentence and type it as fast as you can. Features includes:
+This is an English learning game where you will listen to a random English sentence and type it as fast as you can.
 
+Features includes:
 - Google OAuth login.
 - Game play and performance analysis with accuracy and speed.
 - Leaderboard ranked by accuracy / speed.
