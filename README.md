@@ -13,6 +13,6 @@ This is a typing challenge game where you will listen to a random English senten
 
 <img src="https://raw.githubusercontent.com/eric19960304/SpellRacer/main/screenshots/1.png" height="485px">
 
-![](screenshots/2.png) ![](screenshots/3.png)
+<img src="https://raw.githubusercontent.com/eric19960304/SpellRacer/main/screenshots/2.png" height="485px"> <img src="https://raw.githubusercontent.com/eric19960304/SpellRacer/main/screenshots/3.png" height="485px">
 
 <img src="https://raw.githubusercontent.com/eric19960304/SpellRacer/main/screenshots/4.png" height="485px"> <img src="https://raw.githubusercontent.com/eric19960304/SpellRacer/main/screenshots/5.png" height="485px">
