@@ -32,8 +32,6 @@ class PlayFragment : Fragment(), CoroutineScope by MainScope() {
     private var _binding: FragmentPlayBinding? = null
     private val viewModel: MainViewModel by activityViewModels()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var mainActivity : MainActivity
     private lateinit var playViewModel: PlayViewModel

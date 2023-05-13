@@ -20,9 +20,6 @@ class RankingFragment : Fragment() {
 
     private var _binding: FragmentRankingBinding? = null
     private val viewModel: MainViewModel by activityViewModels()
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(

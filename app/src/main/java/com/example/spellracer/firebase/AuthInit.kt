@@ -11,12 +11,9 @@ class AuthInit(signInLauncher: ActivityResultLauncher<Intent>) {
         val user = FirebaseAuth.getInstance().currentUser
         if(user == null) {
             Log.d(javaClass.simpleName, "user null")
-            // Choose authentication providers
             val providers = arrayListOf(
                 AuthUI.IdpConfig.GoogleBuilder().build())
 
-            // Create and launch sign-in intent
-            // XXX Write me. Set authentication providers and start sign-in for user
             val signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
